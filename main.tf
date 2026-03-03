@@ -1,5 +1,4 @@
-resource "kubernetes_namespace" "qdrant" {
-  count = var.create_namespace ? 1 : 0
+resource "kubernetes_namespace_v1" "qdrant" {
 
   metadata {
     name = var.namespace
@@ -17,7 +16,7 @@ resource "kubernetes_namespace" "qdrant" {
 resource "helm_release" "qdrant" {
   name             = local.release_name
   namespace        = var.namespace
-  create_namespace = var.create_namespace
+  create_namespace = false
   chart            = "qdrant"
   repository       = "https://qdrant.to/helm"
   version          = var.qdrant_version
@@ -33,9 +32,9 @@ resource "helm_release" "qdrant" {
   ]
 
   # Ensure namespace is created first if specified
-  depends_on = var.create_namespace ? [
-    kubernetes_namespace.qdrant
-  ] : []
+  depends_on = [
+    kubernetes_namespace_v1.qdrant
+  ]
 }
 
 # Wait for StatefulSet to be ready

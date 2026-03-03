@@ -87,7 +87,6 @@ module "qdrant" {
 | `cpu_limit` | CPU limit | `string` | `"1000m"` | No |
 | `memory_limit` | Memory limit | `string` | `"2Gi"` | No |
 | `qdrant_version` | Helm chart version | `string` | `"0.7.0"` | No |
-| `create_namespace` | Auto-create namespace | `bool` | `true` | No |
 | `common_tags` | Additional tags for resources | `map(string)` | `{}` | No |
 | `helm_values_override` | Override Helm chart values | `any` | `{}` | No |
 

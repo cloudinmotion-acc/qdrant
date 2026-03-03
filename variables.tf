@@ -1,13 +1,3 @@
-variable "cluster_name" {
-  description = "Name of the EKS cluster"
-  type        = string
-
-  validation {
-    condition     = length(var.cluster_name) > 0
-    error_message = "Cluster name must not be empty."
-  }
-}
-
 variable "namespace" {
   description = "Kubernetes namespace for Qdrant deployment"
   type        = string
@@ -19,24 +9,15 @@ variable "namespace" {
   }
 }
 
-variable "environment" {
-  description = "Environment name (e.g., dev, staging, prod)"
-  type        = string
-
-  validation {
-    condition     = contains(["dev", "staging", "prod"], var.environment)
-    error_message = "Environment must be one of: dev, staging, prod."
-  }
-}
-
-variable "project_name" {
-  description = "Project name for tagging and naming resources"
-  type        = string
-
-  validation {
-    condition     = length(var.project_name) > 0
-    error_message = "Project name must not be empty."
-  }
+variable "platform_output" {
+  description = "Platform output variables (name, owner, environment_type, tags, system_name)"
+  type = object({
+    name             = string
+    owner            = string
+    environment_type = string
+    tags             = map(string)
+    system_name      = string
+  })
 }
 
 variable "replica_count" {
@@ -139,11 +120,6 @@ variable "qdrant_version" {
   default     = "0.7.0"
 }
 
-variable "create_namespace" {
-  description = "Create the namespace if it does not exist"
-  type        = bool
-  default     = true
-}
 
 variable "common_tags" {
   description = "Common tags to apply to all resources"

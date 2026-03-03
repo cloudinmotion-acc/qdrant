@@ -1,4 +1,4 @@
-data "kubernetes_service" "qdrant" {
+data "kubernetes_service_v1" "qdrant" {
   count = 1
 
   metadata {
@@ -11,14 +11,13 @@ data "kubernetes_service" "qdrant" {
 
 locals {
   # Naming convention based on environment and project3
-  release_name = "${var.project_name}-qdrant"
-  service_name = "${var.project_name}-qdrant"
+  release_name = "${var.platform_output.system_name}-qdrant"
+  service_name = "${var.platform_output.system_name}-qdrant"
 
   # Default tags
   common_labels = {
-    managed_by  = "terraform"
-    environment = var.environment
-    project     = var.project_name
+    environment = var.platform_output.environment_type
+    project     = var.platform_output.system_name
   }
 
   # Merge common tags with provided tags
@@ -78,8 +77,8 @@ locals {
 
     # Pod annotations for tagging
     podAnnotations = {
-      "environment"  = var.environment
-      "deployed_at"  = timestamp()
+      "environment" = var.platform_output.environment_type
+      "deployed_at" = timestamp()
     }
 
     # Labels
